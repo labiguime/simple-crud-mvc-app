@@ -20,10 +20,8 @@ userController.createUser = async function (req, res) {
 			gender: req.body.gender
 		};
 		const result = await User.create(user);
-		console.log(result);
 		return res.status(200).json(result);
 	} catch (e) {
-		console.log(e);
 		return res.status(400).json({ error: e.message });
 	}
 };
@@ -41,7 +39,6 @@ userController.deleteUser = async function (req, res) {
 		}
 		return res.status(200).json(result);
 	} catch (e) {
-		console.log(e);
 		return res.status(400).json({ error: e.message });
 	}
 };
@@ -60,7 +57,6 @@ userController.updateUser = async function (req, res) {
 		}
 		return res.status(200).json(result);
 	} catch (e) {
-		console.log(e);
 		return res.status(400).json({ error: e.message });
 	}
 };
