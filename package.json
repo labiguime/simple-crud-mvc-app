@@ -1,0 +1,26 @@
+{
+  "name": "simple-crud-mvc-app",
+  "version": "1.0.0",
+  "description": "Simple application implementing CRUD operations.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/labiguime/simple-crud-mvc-app.git"
+  },
+  "author": "Leo Abiguime",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/labiguime/simple-crud-mvc-app/issues"
+  },
+  "homepage": "https://github.com/labiguime/simple-crud-mvc-app#readme",
+  "dependencies": {
+    "boostrap": "^2.0.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.2"
+  }
+}
