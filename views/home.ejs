@@ -13,22 +13,25 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
+var currentObject = null;
+var globalId = 0;
 $(document).ready(function(){
     $("form#addUser").on('submit', function(e){
         e.preventDefault();
         var data = $(this).serializeArray();
-        console.log(data);
+        $('#modal').modal('hide');
+        $('.createUserModal').modal('hide');
         $.ajax({
             type: 'post',
             url: '/users',
             data: data,
             dataType: 'text'
         })
-        .done( function productAddToTable(data) {
+        .done( function addUserToTable(data) {
             var pUser = $.parseJSON(data);
             // Add tbody tag if it doesn't exist
-            if ($("#productTable tbody").length == 0) {
-                $("#productTable").append("<tbody></tbody>");
+            if ($("#userTable tbody").length == 0) {
+                $("#userTable").append("<tbody></tbody>");
             }
 
               // Append user to our table
@@ -39,15 +42,58 @@ $(document).ready(function(){
                     "<td>" + pUser.email + "</td>" +
                     "<td>" + pUser.age + "</td>" +
                     "<td>" + pUser.gender + "</td>" +
-                    "<td>"+'<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>'+
+                    "<td>"+'<a href="#editUserModal" class="edit"  id="myTest"  data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>'+
               	  '<a href="#" id="deleteRow" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>'+"</td>" +
 
                   "</tr>"
              );
+             $('#modal').modal('toggle');
          });
+         $('#modal').modal('toggle');
     });
 });
 
+$(document).ready(function(){
+    $("form#editUser").on('submit', function(e){
+        e.preventDefault();
+        const userId = $('td:first', $(this).parents('tr')).text();
+        var data = $(this).serializeArray();
+        $('#modal').modal('hide');
+        $('.createUserModal').modal('hide');
+        console.log(data);
+        $.ajax({
+            type: 'put',
+            url: '/users/'+globalId,
+            data: data,
+            dataType: 'text',
+            success: function(result) {
+                currentObject.remove();
+                $("#userTable tbody").append(
+                      "<tr>" +
+                        "<td>" + globalId +" </td>" +
+                        "<td>" + data[0].value + "</td>" +
+                        "<td>" + data[1].value + "</td>" +
+                        "<td>" + data[2].value + "</td>" +
+                        "<td>" + data[3].value + "</td>" +
+                        "<td>"+'<a href="#editUserModal" class="edit"  id="myTest"  data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>'+
+                  	  '<a href="#" id="deleteRow" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>'+"</td>" +
+
+                      "</tr>"
+                 );
+                 $('#modal').modal('toggle');
+            }}).done(function test(data) {
+                $('#modal').modal('toggle');
+            });
+        $('#modal').modal('toggle');
+    });
+});
+$(document).ready(function(){
+    $(".edit").click(function() {
+        globalId = $('td:first', $(this).parents('tr')).text();
+        currentObject = $(this).parents('tr');
+        console.log(globalId);
+    });
+});
 $(document).ready(function(){
     $('table#userTable').on('click','tr a#deleteRow', function(e) {
         e.preventDefault();
@@ -57,7 +103,6 @@ $(document).ready(function(){
         type: 'DELETE',
         success: function(result) {
             console.log('deleted');
-
         }});
         $(this).parents('tr').remove();
     });
@@ -87,20 +132,19 @@ $(document).ready(function(){
               <td><%= user.email %></td>
           	  <td><%= user.age %></td>
           	  <td><%= user.gender %></td>
-              <td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+              <td><a href="#editUserModal" class="edit" id="myTest" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
         	  <a href="#" id="deleteRow" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
           </tr>
           <% }) %>
       </tbody>
     </table>
-
-    <div id="addUserModal" class="modal fade">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">Add student</button>
+    <div id="addUserModal" class="modal fade createUserModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="addUser">
                     <div class="modal-header">
                         <h4 class="modal-title">Add a new user</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -128,11 +172,11 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-	<!-- Edit Modal HTML -->
-	<div id="editEmployeeModal" class="modal fade">
+
+	<div id="editUserModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="testId">
+				<form id="editUser">
 					<div class="modal-header">
 						<h4 class="modal-title">Edit Employee</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -163,7 +207,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	<!-- Delete Modal HTML -->
+
 	<div id="deleteUserModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
