@@ -1,26 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const user = require('../controllers/user.js');
 
 /**
   * @route        GET /users
   * @description  Retrieve all the users
   * @access       Public
   */
-router.get('/', () => {});
-
-/**
-  * @route        GET /users/:id
-  * @description  Retrieve a specific user
-  * @access       Public
-  */
-router.get('/:id', () => {});
+router.get('/', user.getUsers);
 
 /**
   * @route        POST /users/
   * @description  Add a new user
   * @access       Public
   */
-router.post('/', () => {});
+router.post('/', user.createUser);
 
 /**
   * @route        PUT /users/:id

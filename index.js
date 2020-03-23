@@ -22,9 +22,12 @@ const db = require('./config/database');
 db.authenticate()
   .then(() => console.log('Database connected...'))
   .catch(err => console.log('Error: ' + err))
-  
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use('/users/', require('./routes/users'));
+
 app.get('/', (req, res) => {
 	return res.render('home', {test: 'name'});//res.send('You have reached the home page.');
 });
