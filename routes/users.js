@@ -21,13 +21,13 @@ router.post('/', user.createUser);
   * @description  Update a specific user
   * @access       Public
   */
-router.put('/:id', () => {});
+router.put('/:id', user.updateUser);
 
 /**
   * @route        DELETE /users/:id
   * @description  Delete a specific user
   * @access       Public
   */
-router.delete('/:id', () => {});
+router.delete('/:id', user.deleteUser);
 
 module.exports = router;
